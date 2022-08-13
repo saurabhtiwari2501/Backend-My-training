@@ -1,29 +1,44 @@
 const mongoose = require('mongoose');
 
-const userSchema = new mongoose.Schema( {
-    firstName: String,
-    lastName: String,
-    mobile: {
+// const userSchema = new mongoose.Schema( {
+//     firstName: String,
+//     lastName: String,
+//     mobile: {
+//         type: String,
+//         unique: true,
+//         required: true
+//     },
+//     emailId: String,
+//     gender: {
+//         type: String,
+//         enum: ["male", "female", "LGBTQ"] //"falana" will give an error
+//     },
+//     age: Number,
+//     // isIndian: Boolean,
+//     // parentsInfo: {
+//     //     motherName: String,
+//     //     fatherName: String,
+//     //     siblingName: String
+//     // },
+//     // cars: [ String  ]
+// }, { timestamps: true });
+
+
+const bookSchema = new mongoose.Schema( {
+    BookName: String,
+    AuthorName: {
         type: String,
         unique: true,
-        required: true
     },
-    emailId: String,
-    gender: {
+    catogary: {
         type: String,
-        enum: ["male", "female", "LGBTQ"] //"falana" will give an error
+        enum: [" ", "Tragedy", "Sci-Fi", "Fantasy", "Action and Adventure", "Crime and Mystery", "Romance", "Humor and Satire"]
     },
-    age: Number,
-    // isIndian: Boolean,
-    // parentsInfo: {
-    //     motherName: String,
-    //     fatherName: String,
-    //     siblingName: String
-    // },
-    // cars: [ String  ]
+    Year: Number,
+    
 }, { timestamps: true });
 
-module.exports = mongoose.model('User', userSchema) //users
+module.exports = mongoose.model('Book', bookSchema) //users
 
 
 
