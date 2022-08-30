@@ -1,6 +1,9 @@
 const jwt = require("jsonwebtoken");
 const userModel = require("../models/userModel");
 
+
+//___________________________________________________1 _________________________________________________________
+
 const createUser = async function (abcd, xyz) {
   //You can name the req, res objects anything.
   //but the first parameter is always the request 
@@ -11,6 +14,8 @@ const createUser = async function (abcd, xyz) {
   xyz.send({ msg: savedData });
 };
 
+// ___________________________________________________2_________________________________________________________________-
+
 const loginUser = async function (req, res) {
   let userName = req.body.emailId;
   let password = req.body.password;
@@ -19,7 +24,7 @@ const loginUser = async function (req, res) {
   if (!user)
     return res.send({
       status: false,
-      msg: "username or the password is not corerct",
+      msg: "user name or the password is not corerct",
     });
 
   // Once the login is successful, create the jwt token with sign function
@@ -28,6 +33,7 @@ const loginUser = async function (req, res) {
   // The decision about what data to put in token depends on the business requirement
   // Input 2 is the secret
   // The same secret will be used to decode tokens
+
   let token = jwt.sign(
     {
       userId: user._id.toString(),
@@ -39,6 +45,10 @@ const loginUser = async function (req, res) {
   res.setHeader("x-auth-token", token);
   res.send({ status: true, data: token });
 };
+
+
+// __________________________________________________________3_______________________________________________________________
+
 
 const getUserData = async function (req, res) {
   let token = req.headers["x-Auth-token"];
@@ -66,6 +76,10 @@ const getUserData = async function (req, res) {
   res.send({ status: true, data: userDetails });
 };
 
+
+//_____________________________________________________________4___________________________________________________________
+
+
 const updateUser = async function (req, res) {
 // Do the same steps here:
 // Check if the token is present
@@ -83,6 +97,7 @@ const updateUser = async function (req, res) {
   let updatedUser = await userModel.findOneAndUpdate({ _id: userId }, userData);
   res.send({ status: updatedUser, data: updatedUser });
 };
+
 
 const postMessage = async function (req, res) {
     let message = req.body.message
@@ -115,8 +130,19 @@ const postMessage = async function (req, res) {
     return res.send({status: true, data: updatedUser})
 }
 
+//______________________________________________________5____________________________________________________________________
+
+const deleteUser = async function(req, res){
+  const userId = req.params.userId;
+  const userData = req.body;
+  const updatedUser = await userModel.findOneAndUpdate({ _id : userId}, {$set: {isDelted: true }});
+  res.send({ status: true, data: updateUser});
+
+}
+
 module.exports.createUser = createUser;
 module.exports.getUserData = getUserData;
 module.exports.updateUser = updateUser;
 module.exports.loginUser = loginUser;
-module.exports.postMessage = postMessage
+module.exports.postMessage = postMessage;
+module.exports.deleteUser = deleteUser;
